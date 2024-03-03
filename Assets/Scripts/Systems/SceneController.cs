@@ -57,7 +57,7 @@ public class SceneController : MonoBehaviour
       {
         float progress = (sceneToLoad.progress / 2) + (sceneToUnload.progress / 2);
         progressBar.fillAmount = progress;
-        await Task.Delay(10);
+        await Task.Yield();
       }
     }
     else
@@ -65,7 +65,7 @@ public class SceneController : MonoBehaviour
       while (sceneToLoad.progress < 0.99f)
       {
         progressBar.fillAmount = sceneToLoad.progress;
-        await Task.Delay(10);
+        await Task.Yield();
       }
     }
 
