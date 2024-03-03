@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 public class Processor : MonoBehaviour
@@ -72,7 +71,7 @@ public class Processor : MonoBehaviour
       culledTickArgs.PreviousFrameTime = tickArgs.CurrentFrameTime;
       culledTickArgs.CurrentFrameTime = Time.time;
 
-      if (null != UpdateTick)
+      if (null != CulledObjectUpdateTick)
       {
         CulledObjectUpdateTick.Invoke(this, culledTickArgs);
       }
