@@ -1814,7 +1814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isUnloadingCurrent: 1
-  isActivatingLoadingScreen: 0
+  isActivatingLoadingScreen: 1
   sceneName: MainMenu_Scene
 --- !u!114 &2114836655
 MonoBehaviour:

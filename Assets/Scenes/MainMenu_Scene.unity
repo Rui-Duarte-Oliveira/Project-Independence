@@ -804,6 +804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isUnloadingCurrent: 1
+  isActivatingLoadingScreen: 1
   sceneName: Game_Scene
 --- !u!1 &1320412704
 GameObject:

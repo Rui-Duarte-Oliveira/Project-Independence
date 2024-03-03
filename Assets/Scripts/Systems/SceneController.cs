@@ -27,23 +27,23 @@ public class SceneController : MonoBehaviour
     }
 
     instance = this;
-
     LoadScene(startingScene, false, isActivatingLoadingScreen);
   }
 
   public async void LoadScene(string targetSceneName, bool isUnloadingCurrent, bool isActivatingLoadingScreen)
   {
-    sceneToLoad = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
-
     if (isUnloadingCurrent)
     {
       //GetScene is at 1 since we will always have a default persistent scene.
       sceneToUnload = SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).name);
     }
 
+    sceneToLoad = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
+
     if (!isActivatingLoadingScreen)
     {
       sceneToLoad = null;
+      sceneToUnload = null;
       return;
     }
 
@@ -53,16 +53,16 @@ public class SceneController : MonoBehaviour
 
     if(sceneToUnload != null)
     {
-      while (sceneToLoad.progress < 0.99f && sceneToUnload.progress < 0.99f)
+      while (sceneToLoad.progress < 0.9f && sceneToUnload.progress < 0.9f)
       {
-        float progress = (sceneToLoad.progress / 2) + (sceneToUnload.progress / 2);
+        float progress = (sceneToLoad.progress + sceneToUnload.progress) / 2;
         progressBar.fillAmount = progress;
         await Task.Yield();
       }
     }
     else
     {
-      while (sceneToLoad.progress < 0.99f)
+      while (sceneToLoad.progress < 0.9f)
       {
         progressBar.fillAmount = sceneToLoad.progress;
         await Task.Yield();
