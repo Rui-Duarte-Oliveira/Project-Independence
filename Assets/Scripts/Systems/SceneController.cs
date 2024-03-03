@@ -7,12 +7,13 @@ public class SceneController : MonoBehaviour
 {
   [SerializeField] private GameObject loadingCanvas;
   [SerializeField] private Image progressBar;
-  [SerializeField] private string StartingScene;
+  [SerializeField] private bool isActivatingLoadingScreen;
+  [SerializeField] private string startingScene;
 
   private static SceneController instance;
 
-  private Scene previousScene;
   private AsyncOperation sceneToLoad;
+  private AsyncOperation sceneToUnload;
 
   public static SceneController Instance { get => instance; }
 
@@ -27,35 +28,50 @@ public class SceneController : MonoBehaviour
 
     instance = this;
 
-    LoadScene(StartingScene, false);
+    LoadScene(startingScene, false, isActivatingLoadingScreen);
   }
 
-  public async void LoadScene(string targetSceneName, bool isUnloadingCurrent)
+  public async void LoadScene(string targetSceneName, bool isUnloadingCurrent, bool isActivatingLoadingScreen)
   {
-    //GetScene is at 1 since we will always have a default persistent scene.
-    previousScene = SceneManager.GetSceneAt(1);
+    sceneToLoad = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
 
     if (isUnloadingCurrent)
     {
-      UnLoadScene(previousScene.name);
+      //GetScene is at 1 since we will always have a default persistent scene.
+      sceneToUnload = SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1).name);
     }
 
-    sceneToLoad = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
+    if (!isActivatingLoadingScreen)
+    {
+      sceneToLoad = null;
+      return;
+    }
+
     sceneToLoad.allowSceneActivation = false;
 
     loadingCanvas.SetActive(true);
-    while (sceneToLoad.progress < 0.9f)
+
+    if(sceneToUnload != null)
     {
-      await Task.Delay(100);
-      progressBar.fillAmount = sceneToLoad.progress;
+      while (sceneToLoad.progress < 0.99f && sceneToUnload.progress < 0.99f)
+      {
+        float progress = (sceneToLoad.progress / 2) + (sceneToUnload.progress / 2);
+        progressBar.fillAmount = progress;
+        await Task.Delay(10);
+      }
+    }
+    else
+    {
+      while (sceneToLoad.progress < 0.99f)
+      {
+        progressBar.fillAmount = sceneToLoad.progress;
+        await Task.Delay(10);
+      }
     }
 
     sceneToLoad.allowSceneActivation = true;
     loadingCanvas.SetActive(false);
-  }
-
-  private void UnLoadScene(string targetSceneName)
-  {
-    SceneManager.UnloadSceneAsync(targetSceneName);
+    sceneToUnload = null;
+    sceneToLoad = null;
   }
 }

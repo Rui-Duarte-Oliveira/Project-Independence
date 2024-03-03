@@ -20,6 +20,7 @@ public class WorldObject : MonoBehaviour
     }
 
     Processor.UpdateTick += UpdateTick;
+    Processor.StandardUpdate += StandardUpdate;
   }
 
   protected virtual void Start() { }
@@ -51,6 +52,7 @@ public class WorldObject : MonoBehaviour
     Processor.CulledObjectUpdateTick -= CulledObjectUpdateTick;
   }
 
+  protected virtual void StandardUpdate() { }
   protected virtual void UpdateTick(object sender, OnTickEventArgs eventArgs) { }
   protected virtual void CulledObjectUpdateTick(object sender, OnTickEventArgs eventArgs) { }
 }
