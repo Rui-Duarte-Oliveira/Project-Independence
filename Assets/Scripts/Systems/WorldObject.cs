@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WorldObject : MonoBehaviour
 {
+  [SerializeField] private bool isCullable = false;
+
   protected virtual void Awake()
   {
     Type objectType = GetType();
@@ -18,7 +20,6 @@ public class WorldObject : MonoBehaviour
     }
 
     Processor.UpdateTick += UpdateTick;
-    Processor.CulledObjectUpdateTick += CulledObjectUpdateTick;
   }
 
   protected virtual void Start() { }
@@ -30,6 +31,24 @@ public class WorldObject : MonoBehaviour
   public virtual void OnWorldObjectDestroyed()
   {
     Processor.WorldObjectRegistry[GetType()].Remove(this);
+  }
+
+  public virtual void OnWorldObjectCulled(bool value)
+  {
+    if(!isCullable)
+    {
+      return;
+    }
+
+    if (value)
+    {
+      Processor.UpdateTick -= UpdateTick;
+      Processor.CulledObjectUpdateTick += CulledObjectUpdateTick;
+      return;
+    }
+
+    Processor.UpdateTick += UpdateTick;
+    Processor.CulledObjectUpdateTick -= CulledObjectUpdateTick;
   }
 
   protected virtual void UpdateTick(object sender, OnTickEventArgs eventArgs) { }

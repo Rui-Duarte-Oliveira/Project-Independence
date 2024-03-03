@@ -3,31 +3,63 @@ using UnityEngine;
 
 public class SimulationController : WorldObject
 {
-  [SerializeField] private int secondsToTick;
+  [SerializeField] private float simulationLoopMaxTime;
+  [SerializeField] private int simulationLoopTime;
 
+  public static Action SimulationUpdate;
+  public static Action PreSimulationLoop;
   public static Action SimulationLoop;
+  public static Action PostSimulationLoop;
 
-  private int tickCounter;
+  private float simulationTime;
+  private float simulationTimeCounter;
+  private float loopTimeCounter;
 
   protected override void Awake()
   {
     base.Awake();
-    tickCounter = 0;
+    loopTimeCounter = 0;
+    simulationTime = 1.0f * simulationLoopTime;
   }
 
   protected override void UpdateTick(object sender, OnTickEventArgs eventArgs)
   {
-    ++tickCounter;
+    loopTimeCounter += eventArgs.DeltaTime;
+    simulationTimeCounter += eventArgs.DeltaTime;
 
-    if(tickCounter == (eventArgs.TickRate * secondsToTick)) 
+    if (simulationTimeCounter >= simulationTime)
     {
-      tickCounter = 0;
-      Simulate();
+      simulationTimeCounter -= simulationTime;
+      UpdateCall();
+    }
+
+    if (loopTimeCounter >= simulationLoopMaxTime) 
+    {
+      loopTimeCounter -= simulationLoopMaxTime;
+
+      PreLoopCall();
+      LoopCall();
+      PostLoopCall();
     }
   }
 
-  private void Simulate()
+  private void UpdateCall()
+  {
+    SimulationUpdate?.Invoke();
+  }
+
+  private void PreLoopCall()
+  {
+    PreSimulationLoop?.Invoke();
+  }
+
+  private void LoopCall()
   {
     SimulationLoop?.Invoke();
+  }
+
+  private void PostLoopCall()
+  {
+    PostSimulationLoop?.Invoke();
   }
 }

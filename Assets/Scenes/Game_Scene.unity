@@ -504,8 +504,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eab3f22d36f8b4d44ad8470d8894d639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickRate: 64
-  culledObjectUpdateTickDivisor: 2
+  tickRate: 16
+  culledObjectTickRateDivisor: 2
 --- !u!1 &1667941027
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,7 +550,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53424922fed882c45b8ea00087f2666c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsToTick: 2
+  isCullable: 0
+  simulationLoopMaxTime: 5
+  simulationLoopTime: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
