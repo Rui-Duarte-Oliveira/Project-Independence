@@ -1,9 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EntitySelection : WorldObject
 {
   private SelectableEntities<SelectableEntity> selectedEntities;
+
+  public SelectableEntities<SelectableEntity> SelectedEntities { get => selectedEntities; }
 
   protected override void Awake()
   {
@@ -13,9 +14,16 @@ public class EntitySelection : WorldObject
 
   public void ClickSelect(SelectableEntity entityToAdd)
   {
+    if (entityToAdd.GetType() == typeof(StationaryEntity))
+    {
+      DeselectAll();
+      selectedEntities.Add(entityToAdd);
+      return;
+    }
+
     if (selectedEntities.Contains(entityToAdd))
     {
-      if(selectedEntities.Count != 1)
+      if (selectedEntities.Count != 1)
       {
         DeselectAll(entityToAdd);
       }
@@ -29,7 +37,13 @@ public class EntitySelection : WorldObject
 
   public void AdditiveClickSelect(SelectableEntity entityToAdd)
   {
-    if(!selectedEntities.Contains(entityToAdd))
+    if (entityToAdd.GetType() == typeof(StationaryEntity))
+    {
+      ClickSelect(entityToAdd);
+      return;
+    }
+
+    if (!selectedEntities.Contains(entityToAdd))
     {
       selectedEntities.Add(entityToAdd);
       return;
@@ -58,23 +72,6 @@ public class EntitySelection : WorldObject
     selectedEntities.Remove(entityToAdd);
   }
 
-  public void SelectAllOfType<T>() where T : SelectableEntity
-  {
-    if (!Processor.WorldObjectRegistry.ContainsKey(typeof(SelectableEntity)))
-    {
-      Debug.LogWarning("No Entities present in scene!");
-      return;
-    }
-
-    SelectableEntity entity = null;
-
-    for (int i = 0; i < Processor.WorldObjectRegistry[typeof(SelectableEntity)].Count; ++i)
-    {
-      entity = (SelectableEntity)Processor.WorldObjectRegistry[typeof(SelectableEntity)][i];
-      selectedEntities.Add(entity);
-    }
-  }
-
   public void Deselect(SelectableEntity entityToRemove)
   {
     if (selectedEntities.Contains(entityToRemove))
@@ -96,4 +93,21 @@ public class EntitySelection : WorldObject
   {
     selectedEntities.Clear(entityToAdd);
   }
+
+  //public void SelectAllOfType<T>() where T : SelectableEntity
+  //{
+  //  if (!Processor.WorldObjectRegistry.ContainsKey(typeof(SelectableEntity)))
+  //  {
+  //    Debug.LogWarning("No Entities present in scene!");
+  //    return;
+  //  }
+
+  //  SelectableEntity entity = null;
+
+  //  for (int i = 0; i < Processor.WorldObjectRegistry[typeof(SelectableEntity)].Count; ++i)
+  //  {
+  //    entity = (SelectableEntity)Processor.WorldObjectRegistry[typeof(SelectableEntity)][i];
+  //    selectedEntities.Add(entity);
+  //  }
+  //}
 }

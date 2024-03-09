@@ -6,7 +6,6 @@ public class OnEntitySelection : WorldObject
   //Graphical
   [SerializeField] private RectTransform visualBoxSelectionRectTransform;
   [SerializeField] private LayerMask clickableLayer;
-  [SerializeField] private LayerMask groundLayer;
 
   private Camera mainCamera;
   private EntitySelection entitySelection;
@@ -91,6 +90,11 @@ public class OnEntitySelection : WorldObject
       
       if (logicalBoxSelection.Contains(mainCamera.WorldToScreenPoint(entity.transform.position)))
       {
+        if (entity.GetType() == typeof(StationaryEntity))
+        {
+          continue;
+        }
+
         if (!isAdditive)
         {
           entitySelection.DragSelect(entity);

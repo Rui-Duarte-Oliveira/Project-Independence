@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TownEntity : SelectableEntity
+public class StationaryEntity : SelectableEntity
 {
   [SerializeField] private Material materialToSwap;
   [SerializeField] private List<MeshRenderer> meshRenderer;

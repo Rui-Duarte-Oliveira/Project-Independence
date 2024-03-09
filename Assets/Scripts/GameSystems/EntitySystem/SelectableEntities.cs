@@ -1,11 +1,19 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SelectableEntities<T> : List<T> where T : SelectableEntity
 {
   public new void Add(T item)
   {
     item.OnSelected();
+
+    if(Count > 0)
+    {
+      if(this[0].GetType() != item.GetType())
+      {
+        Clear();
+      }
+    }
+
     base.Add(item);
   }
 
