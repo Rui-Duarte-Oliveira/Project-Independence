@@ -6,7 +6,8 @@ public class SimulationController : WorldObject
   [SerializeField] private float simulationLoopMaxTime;
   [SerializeField] private int simulationLoopTime;
 
-  public static Action SimulationUpdate;
+  public static Action SimulationTimedUpdate;
+
   public static Action PreSimulationLoop;
   public static Action SimulationLoop;
   public static Action PostSimulationLoop;
@@ -24,13 +25,15 @@ public class SimulationController : WorldObject
 
   protected override void UpdateTick(object sender, OnTickEventArgs eventArgs)
   {
+    base.UpdateTick(sender, eventArgs);
+
     loopTimeCounter += eventArgs.DeltaTime;
     simulationTimeCounter += eventArgs.DeltaTime;
 
     if (simulationTimeCounter >= simulationTime)
     {
       simulationTimeCounter -= simulationTime;
-      UpdateCall();
+      TimedUpdateCall();
     }
 
     if (loopTimeCounter >= simulationLoopMaxTime) 
@@ -43,9 +46,9 @@ public class SimulationController : WorldObject
     }
   }
 
-  private void UpdateCall()
+  private void TimedUpdateCall()
   {
-    SimulationUpdate?.Invoke();
+    SimulationTimedUpdate?.Invoke();
   }
 
   private void PreLoopCall()

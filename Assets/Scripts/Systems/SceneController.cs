@@ -27,7 +27,10 @@ public class SceneController : MonoBehaviour
     }
 
     instance = this;
+
+#if !UNITY_EDITOR
     LoadScene(startingScene, false, isActivatingLoadingScreen);
+#endif
   }
 
   public async void LoadScene(string targetSceneName, bool isUnloadingCurrent, bool isActivatingLoadingScreen)
