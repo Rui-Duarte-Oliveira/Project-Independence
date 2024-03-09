@@ -43,6 +43,11 @@ public class OnDragEntitySelection : OnEntitySelection
 
     if (Input.GetMouseButtonUp(0))
     {
+      if(startPosition == endPosition)
+      {
+        return;
+      }
+
       SelectEntities();
       startPosition = Vector2.zero;
       endPosition = Vector2.zero;

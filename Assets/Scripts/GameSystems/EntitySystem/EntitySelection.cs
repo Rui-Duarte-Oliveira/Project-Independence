@@ -11,6 +11,12 @@ public class EntitySelection : WorldObject
 
   public void ClickSelect(SelectableEntity entityToAdd)
   {
+    if (selectedEntities.Contains(entityToAdd))
+    {
+      DeselectAll(entityToAdd);
+      return;
+    }
+
     DeselectAll();
     selectedEntities.Add(entityToAdd);
   }
@@ -54,5 +60,14 @@ public class EntitySelection : WorldObject
   public void DeselectAll()
   {
     selectedEntities.Clear();
+  }
+
+  /// <summary>
+  /// Deselect all entities except parameter input.
+  /// </summary>
+  /// <param name="entityToAdd"></param>
+  public void DeselectAll(SelectableEntity entityToAdd)
+  {
+    selectedEntities.Clear(entityToAdd);
   }
 }

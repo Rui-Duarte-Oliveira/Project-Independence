@@ -24,4 +24,23 @@ public class SelectableEntities<T> : List<T> where T : SelectableEntity
 
     base.Clear();
   }
+
+  public void Clear(T item)
+  {
+    List<T> itemsToRemove = new List<T>();
+    for (int i = 0; i < Count; ++i)
+    {
+      if (this[i] == item)
+      {
+        continue;
+      }
+
+      itemsToRemove.Add(this[i]);
+    }
+
+    for (int i = 0; i < itemsToRemove.Count; ++i)
+    {
+      Remove(itemsToRemove[i]);
+    }
+  }
 }

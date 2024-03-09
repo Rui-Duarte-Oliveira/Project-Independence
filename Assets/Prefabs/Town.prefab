@@ -425,6 +425,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7857367862805974063}
   - component: {fileID: 7454720931780974752}
+  - component: {fileID: 783616775504551390}
   m_Layer: 3
   m_Name: Town
   m_TagString: Untagged
@@ -474,6 +475,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 5, z: 0}
+--- !u!114 &783616775504551390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6328495706532595971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eeb686232494364481cfb105d328023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCullable: 0
+  materialToSwap: {fileID: 2100000, guid: 5541b833cc64502458eed5470ed07031, type: 2}
+  meshRenderer:
+  - {fileID: 5538646704167979951}
+  - {fileID: 3456305989124094993}
 --- !u!1 &6676890807584977817
 GameObject:
   m_ObjectHideFlags: 0
