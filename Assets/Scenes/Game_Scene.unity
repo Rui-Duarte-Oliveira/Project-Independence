@@ -158,7 +158,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!114 &1864861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1948,7 +1948,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1919215207}
   - component: {fileID: 1919215209}
-  - component: {fileID: 1919215208}
   - component: {fileID: 1919215210}
   m_Layer: 0
   m_Name: SelectionSystem
@@ -1972,26 +1971,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 878690085}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1919215208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1919215206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fed637265c6e3624a99b7f06330bf896, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCullable: 0
-  clickableLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  gracePeriodUntilClickSelection: 0.1
 --- !u!114 &1919215209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2014,11 +1993,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1919215206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 982a6d22bd9aebe4d941f733352459b7, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f82c7e2cfbe4c143848810e3cf08d51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isCullable: 0
   visualBoxSelectionRectTransform: {fileID: 284224039}
+  clickableLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &2046948223
 GameObject:
   m_ObjectHideFlags: 0
