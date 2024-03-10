@@ -138,42 +138,18 @@ public class OnEntitySelection : WorldObject
 
   private void DrawVisual()
   {
-    Vector2 boxStart = startPosition;
-    Vector2 boxEnd = endPosition;
+    //Center
+    visualBoxSelectionRectTransform.position = (startPosition + endPosition) / 2;
 
-    Vector2 boxCenter = (boxStart + boxEnd) / 2;
-    visualBoxSelectionRectTransform.position = boxCenter;
-
-    Vector2 boxSize = new Vector2(Mathf.Abs(boxStart.x - boxEnd.x), Mathf.Abs(boxStart.y - boxEnd.y));
-    visualBoxSelectionRectTransform.sizeDelta = boxSize;
+    //Size
+    visualBoxSelectionRectTransform.sizeDelta = new Vector2(Mathf.Abs(startPosition.x - endPosition.x), Mathf.Abs(startPosition.y - endPosition.y));
   }
 
   private void DrawLogical(Vector2 inputPosition)
   {
-    if (inputPosition.x < startPosition.x)
-    {
-      //dragging left
-      logicalBoxSelection.xMin = inputPosition.x;
-      logicalBoxSelection.xMax = startPosition.x;
-    }
-    else
-    {
-      //dragging right
-      logicalBoxSelection.xMin = startPosition.x;
-      logicalBoxSelection.xMax = inputPosition.x;
-    }
-
-    if (inputPosition.y < startPosition.y)
-    {
-      //dragging down
-      logicalBoxSelection.yMin = inputPosition.y;
-      logicalBoxSelection.yMax = startPosition.y;
-    }
-    else
-    {
-      //dragging up
-      logicalBoxSelection.yMin = startPosition.y;
-      logicalBoxSelection.yMax = inputPosition.y;
-    }
+    logicalBoxSelection.xMin = Mathf.Min(inputPosition.x, startPosition.x);
+    logicalBoxSelection.xMax = Mathf.Max(inputPosition.x, startPosition.x);
+    logicalBoxSelection.yMin = Mathf.Min(inputPosition.y, startPosition.y);
+    logicalBoxSelection.yMax = Mathf.Max(inputPosition.y, startPosition.y);
   }
 }
