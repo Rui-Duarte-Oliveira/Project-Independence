@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SelectableEntities<T> : List<T> where T : SelectableEntity
 {
@@ -8,7 +10,7 @@ public class SelectableEntities<T> : List<T> where T : SelectableEntity
 
     if(Count > 0)
     {
-      if(this[0].GetType() != item.GetType())
+      if(!IsOfSameType(this[0].GetType(), item.GetType()))
       {
         Clear();
       }
@@ -50,5 +52,50 @@ public class SelectableEntities<T> : List<T> where T : SelectableEntity
     {
       Remove(itemsToRemove[i]);
     }
+  }
+
+  private bool IsOfSameType(Type firstType, Type secondType)
+  {
+    if (firstType == secondType)
+    {
+      return true;
+    }
+
+    if (firstType.IsAssignableFrom(secondType) || secondType.IsAssignableFrom(firstType))
+    {
+      return true;
+    }
+
+    HashSet<Type> firstAncestors = GetAncestorTypes(firstType);
+    HashSet<Type> secondAncestors = GetAncestorTypes(secondType);
+
+    foreach (Type ancestor in firstAncestors)
+    {
+      if (secondAncestors.Contains(ancestor))
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private HashSet<Type> GetAncestorTypes(Type type)
+  {
+    HashSet<Type> ancestors = new HashSet<Type>();
+    Type currentType = type.BaseType;
+
+    while (currentType != null && currentType != typeof(SelectableEntity))
+    {
+      ancestors.Add(currentType);
+      currentType = currentType.BaseType;
+    }
+
+    if (ancestors.Contains(typeof(SelectableEntity)))
+    {
+      ancestors.Remove(typeof(SelectableEntity));
+    }
+
+    return ancestors;
   }
 }

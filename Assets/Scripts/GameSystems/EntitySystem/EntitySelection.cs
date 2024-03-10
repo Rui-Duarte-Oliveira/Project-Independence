@@ -14,13 +14,6 @@ public class EntitySelection : WorldObject
 
   public void ClickSelect(SelectableEntity entityToAdd)
   {
-    if (entityToAdd.GetType() == typeof(StationaryEntity))
-    {
-      DeselectAll();
-      selectedEntities.Add(entityToAdd);
-      return;
-    }
-
     if (selectedEntities.Contains(entityToAdd))
     {
       if (selectedEntities.Count != 1)
