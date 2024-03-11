@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SelectableEntities<T> : List<T> where T : SelectableEntity
 {
