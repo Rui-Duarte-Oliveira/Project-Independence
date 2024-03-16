@@ -7,6 +7,7 @@ public class OnEntitySelection : WorldObject
   [SerializeField] private RectTransform visualBoxSelectionRectTransform;
   [SerializeField] private LayerMask clickableLayer;
 
+  private PlayerManager playerManager;
   private Camera mainCamera;
   private EntitySelection entitySelection;
   private SelectableEntity hitEntity;
@@ -20,6 +21,7 @@ public class OnEntitySelection : WorldObject
   {
     mainCamera = Camera.main;
     entitySelection = GetComponent<EntitySelection>();
+    playerManager = (PlayerManager)Processor.WorldObjectRegistry[typeof(PlayerManager)][0];
   }
 
   protected override void OnEnable()
@@ -70,13 +72,6 @@ public class OnEntitySelection : WorldObject
 
   private void OnDragSelection()
   {
-    if (!Processor.WorldObjectRegistry.ContainsKey(typeof(SelectableEntity)))
-    {
-      Debug.LogWarning("No Entities present in scene!");
-      return;
-    }
-
-    SelectableEntity entity = null;
     bool isAdditive = Input.GetKey(KeyCode.LeftShift);
 
     if (!isAdditive)
@@ -84,10 +79,8 @@ public class OnEntitySelection : WorldObject
       entitySelection.DeselectAll();
     }
 
-    for (int i = 0; i < Processor.WorldObjectRegistry[typeof(SelectableEntity)].Count; ++i)
+    foreach (SelectableEntity entity in playerManager.SelectableEntities)
     {
-      entity = (SelectableEntity)Processor.WorldObjectRegistry[typeof(SelectableEntity)][i];
-      
       if (logicalBoxSelection.Contains(mainCamera.WorldToScreenPoint(entity.transform.position)))
       {
         if (entity.GetType() == typeof(StationaryEntity))
@@ -115,6 +108,12 @@ public class OnEntitySelection : WorldObject
       if (!raycastHit.collider.gameObject.TryGetComponent(out hitEntity))
       {
         Debug.LogError($"Object {raycastHit.collider.transform.name} is not a selectable entity!");
+        return;
+      }
+
+      //Might want to rehink this
+      if (!playerManager.SelectableEntities.Contains(hitEntity))
+      {
         return;
       }
 

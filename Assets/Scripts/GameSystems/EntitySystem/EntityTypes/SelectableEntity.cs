@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 public class SelectableEntity : Entity
 {
+  protected bool isSelected;
+  public bool IsSelected { get => isSelected; }
+
   protected override void Awake()
   {
     base.Awake();
@@ -13,9 +16,11 @@ public class SelectableEntity : Entity
     {
       Processor.WorldObjectRegistry.Add(typeof(SelectableEntity), new List<WorldObject>() { this });
     }
+
+    isSelected = false;
   }
 
-  public virtual void OnSelected() { }
+  public virtual void OnSelected() => isSelected = true;
 
-  public virtual void OnDeselected() { }
+  public virtual void OnDeselected() => isSelected = false;
 }

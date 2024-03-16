@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class EntitySelection : WorldObject
 {
   private SelectableEntities<SelectableEntity> selectedEntities;

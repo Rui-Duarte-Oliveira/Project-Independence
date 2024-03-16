@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WorldObject : MonoBehaviour
 {
+  [SerializeField] private bool hasUpdate = true;
   [SerializeField] private bool isCullable = false;
 
   protected virtual void Awake()
@@ -19,8 +20,11 @@ public class WorldObject : MonoBehaviour
       Processor.WorldObjectRegistry.Add(objectType, new List<WorldObject>() { this });
     }
 
-    Processor.UpdateTick += UpdateTick;
-    Processor.StandardUpdate += StandardUpdate;
+    if (hasUpdate)
+    {
+      Processor.UpdateTick += UpdateTick;
+      Processor.StandardUpdate += StandardUpdate;
+    }
   }
 
   protected virtual void Start() { }
@@ -36,7 +40,7 @@ public class WorldObject : MonoBehaviour
 
   public virtual void OnWorldObjectCulled(bool value)
   {
-    if(!isCullable)
+    if(!isCullable || !hasUpdate)
     {
       return;
     }
