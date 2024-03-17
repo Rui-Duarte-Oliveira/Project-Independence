@@ -3,66 +3,53 @@ using UnityEngine;
 
 public class SimulationController : WorldObject
 {
-  [SerializeField] private float simulationLoopMaxTime;
-  [SerializeField] private int simulationLoopTime;
+  [SerializeField, Tooltip("Amount of seconds it takes for a full day to pass.")] private float simulationDayDuration;
 
-  public static Action SimulationTimedUpdate;
+  public static Action OnHourUpdate;
+  public static Action OnDayUpdate;
 
-  public static Action PreSimulationLoop;
-  public static Action SimulationLoop;
-  public static Action PostSimulationLoop;
-
-  private float simulationTime;
-  private float simulationTimeCounter;
-  private float loopTimeCounter;
+  private float simulationHourDuration;
+  private float dayTimeCounter;
+  private float hourTimeCounter;
 
   protected override void Awake()
   {
     base.Awake();
-    loopTimeCounter = 0;
-    simulationTime = 1.0f * simulationLoopTime;
+
+    SimulationTime.SimulationDayDuration = simulationDayDuration;
+
+    simulationHourDuration = simulationDayDuration / SimulationTime.DayDuration;
+    dayTimeCounter = 0.0f;
+    hourTimeCounter = 0.0f;
   }
 
   protected override void UpdateTick(object sender, OnTickEventArgs eventArgs)
   {
     base.UpdateTick(sender, eventArgs);
 
-    loopTimeCounter += eventArgs.DeltaTime;
-    simulationTimeCounter += eventArgs.DeltaTime;
+    hourTimeCounter += eventArgs.DeltaTime;
 
-    if (simulationTimeCounter >= simulationTime)
+    if (hourTimeCounter >= simulationHourDuration)
     {
-      simulationTimeCounter -= simulationTime;
-      TimedUpdateCall();
+      hourTimeCounter -= simulationHourDuration;
+      dayTimeCounter += simulationHourDuration;
+      OnHourUpdateCall();
     }
 
-    if (loopTimeCounter >= simulationLoopMaxTime) 
+    if (dayTimeCounter >= simulationDayDuration) 
     {
-      loopTimeCounter -= simulationLoopMaxTime;
-
-      PreLoopCall();
-      LoopCall();
-      PostLoopCall();
+      dayTimeCounter = 0.0f;
+      OnDayUpdateCall();
     }
   }
 
-  private void TimedUpdateCall()
+  private void OnHourUpdateCall()
   {
-    SimulationTimedUpdate?.Invoke();
+    OnHourUpdate?.Invoke();
   }
 
-  private void PreLoopCall()
+  private void OnDayUpdateCall()
   {
-    PreSimulationLoop?.Invoke();
-  }
-
-  private void LoopCall()
-  {
-    SimulationLoop?.Invoke();
-  }
-
-  private void PostLoopCall()
-  {
-    PostSimulationLoop?.Invoke();
+    OnDayUpdate?.Invoke();
   }
 }
