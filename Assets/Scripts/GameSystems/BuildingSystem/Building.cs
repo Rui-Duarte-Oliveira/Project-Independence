@@ -6,16 +6,16 @@ public class Building : WorldObject
   [SerializeField] private string buildingName;
   [SerializeField] private float constructionTimeInHours;
 
-  private Entity owner;
+  private ConstructionEntity owner;
   private Image progressImage;
 
   private float currentConstructionTimeInHours;
   private float fillMax;
 
-  public Entity Owner { get => owner; set => owner = value; }
+  public ConstructionEntity Owner { get => owner; set => owner = value; }
   public Image ProgressImage { get => progressImage; set => progressImage = value; }
 
-  public virtual void OnConstructionStart(Entity entity) 
+  public virtual void OnConstructionStart(ConstructionEntity entity) 
   {
     owner = entity;
     SimulationController.OnHourUpdate += ConstructionLoop;
@@ -36,6 +36,7 @@ public class Building : WorldObject
   public virtual void OnConstructionEnd() 
   {
     SimulationController.OnHourUpdate -= ConstructionLoop;
+    Owner.Manager.UpdateBuildingUI(Owner);
   }
 
   public virtual void OnDestruction() { }

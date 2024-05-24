@@ -792,15 +792,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasUpdate: 1
   isCullable: 0
-  materialToSwap: {fileID: 2100000, guid: 5541b833cc64502458eed5470ed07031, type: 2}
-  meshRenderer:
-  - {fileID: 5538646704167979951}
-  - {fileID: 3456305989124094993}
+  entityName: Town
+  entityDescription: Nothing
   buildingSlots:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  maxBuildingSlots: 4
+  maxBuildingSlots: 6
 --- !u!1 &6676890807584977817
 GameObject:
   m_ObjectHideFlags: 0
